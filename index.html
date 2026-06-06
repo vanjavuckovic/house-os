@@ -1,84 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>House OS v2</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-</head>
-
 <body>
+  <h1 style="padding:10px">🏠 House OS Board</h1>
 
-<div id="lock">
-  <div class="box">
-    <h1>🏠 House OS</h1>
-    <p>Enter PIN</p>
-    <input id="pin" type="password" maxlength="4">
-    <button onclick="unlock()">Unlock</button>
-    <p id="err"></p>
-  </div>
-</div>
+  <div id="board" class="board"></div>
 
-<div id="app">
+  <input id="newTask" placeholder="New task...">
+  <select id="room"></select>
+  <button onclick="addTask()">Add</button>
 
-  <header>
-    <h1>🏠 Dordtselaan OS v2</h1>
-    <button onclick="reset()">Logout</button>
-  </header>
-
-  <nav>
-    <button onclick="tab('dash')">Dashboard</button>
-    <button onclick="tab('rooms')">Rooms</button>
-    <button onclick="tab('tasks')">Tasks</button>
-    <button onclick="tab('budget')">Budget</button>
-    <button onclick="tab('roadmap')">Roadmap</button>
-  </nav>
-
-  <!-- DASHBOARD -->
-  <section id="dash" class="page">
-    <h2>Dashboard</h2>
-    <div id="summary"></div>
-  </section>
-
-  <!-- ROOMS -->
-  <section id="rooms" class="page hidden">
-    <h2>Rooms</h2>
-
-<div id="roomBoard"></div>
-
-    <div id="roomData"></div>
-  </section>
-
-  <!-- TASKS -->
-  <section id="tasks" class="page hidden">
-    <h2>All Tasks</h2>
-    <input id="taskInput" placeholder="New task">
-    <button onclick="addTask()">Add</button>
-    <div id="taskList"></div>
-  </section>
-
-  <!-- BUDGET -->
-  <section id="rooms" class="page">
-    <h2>Budget</h2>
-
-    <input id="bName" placeholder="Item">
-    <input id="bCost" placeholder="Cost">
-    <button onclick="addBudget()">Add</button>
-
-    <div id="budgetList"></div>
-    <h3 id="total"></h3>
-  </section>
-
-  <!-- ROADMAP -->
-  <section id="roadmap" class="page hidden">
-    <h2>Renovation Roadmap</h2>
-    <div class="card">Phase 1: Move-in ready</div>
-    <div class="card">Phase 2: Living upgrade</div>
-    <div class="card">Phase 3: Value increase</div>
-  </section>
-
-</div>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
-</html>
