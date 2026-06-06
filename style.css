@@ -1,17 +1,10 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   margin: 0;
   background: #0b1220;
   color: white;
 }
 
-/* HEADER */
-h1 {
-  padding: 15px;
-  margin: 0;
-}
-
-/* BOARD LAYOUT */
 #board {
   display: flex;
   gap: 12px;
@@ -19,61 +12,24 @@ h1 {
   overflow-x: auto;
 }
 
-/* COLUMNS */
 .column {
   background: #111827;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 10px;
   min-width: 220px;
   flex: 0 0 auto;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-.column h3 {
-  margin-top: 0;
-  font-size: 16px;
-  border-bottom: 1px solid #2a3441;
-  padding-bottom: 6px;
-}
-
-/* TASK CARDS */
 .card {
   background: #1f2937;
   margin-top: 8px;
   padding: 8px;
   border-radius: 8px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 8px;
-}
-
-.card input[type="checkbox"] {
-  transform: scale(1.1);
 }
 
 .done {
   text-decoration: line-through;
   opacity: 0.5;
-}
-
-/* INPUT AREA */
-input, select {
-  margin: 10px;
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-}
-
-button {
-  padding: 8px 10px;
-  border: none;
-  border-radius: 6px;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #1d4ed8;
 }
