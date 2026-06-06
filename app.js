@@ -61,14 +61,16 @@ function render(){
 
     const filtered = tasks.filter(t => t.room === room);
 
-    col.innerHTML = `<h3>${room}</h3>` +
-      filtered.map((t,i)=>`
+    col.innerHTML = `
+      <h3>${room}</h3>
+      ${filtered.map((t,i)=>`
         <div class="card ${t.done ? "done" : ""}">
           <input type="checkbox" ${t.done ? "checked" : ""} onclick="toggle(${tasks.indexOf(t)})">
           ${t.text}
           <button onclick="removeTask(${tasks.indexOf(t)})">❌</button>
         </div>
-      `).join("");
+      `).join("")}
+    `;
 
     board.appendChild(col);
   });
