@@ -1,107 +1,77 @@
-const PIN = "1991";
+const rooms = ["Living Room","Bedroom","Kitchen","Bathroom","Study","Future Room"];
 
-let rooms = ["Living Room","Bedroom","Study","Kitchen","Bathroom","Future Room"];
-
-function unlock(){
-  if(document.getElementById("pin").value === PIN){
-    document.getElementById("lock").style.display="none";
-    init();
-  } else {
-    document.getElementById("err").innerText="Wrong PIN";
-  }
+function getTasks(){
+  return JSON.parse(localStorage.getItem("tasks") || "[]");
 }
 
-function reset(){
-  localStorage.clear();
-  location.reload();
+function saveTasks(t){
+  localStorage.setItem("tasks", JSON.stringify(t));
 }
 
-function tab(id){
-  document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-}
+function init(){
+  const sel = document.getElementById("room");
 
-/* STORAGE */
-function get(k){ return JSON.parse(localStorage.getItem(k)||"[]"); }
-function set(k,v){ localStorage.setItem(k,JSON.stringify(v)); }
-
-/* TASKS */
-function addTask(){
-  let t=get("tasks");
-  t.push(document.getElementById("taskInput").value);
-  set("tasks",t);
-  renderTasks();
-}
-
-function renderTasks(){
-  document.getElementById("taskList").innerHTML=
-    get("tasks").map(t=>`<div class="card">${t}</div>`).join("");
-}
-
-/* ROOMS */
-function initRooms(){
-  let sel=document.getElementById("roomSelect");
-  sel.innerHTML="";
   rooms.forEach(r=>{
-    let opt=document.createElement("option");
-    opt.value=r;
-    opt.innerText=r;
+    const opt = document.createElement("option");
+    opt.value = r;
+    opt.innerText = r;
     sel.appendChild(opt);
   });
+
+  render();
 }
 
-function addRoomTask(){
-  let r=get("roomTasks");
-  r.push({
-    room:document.getElementById("roomSelect").value,
-    task:document.getElementById("roomTask").value
+function addTask(){
+  const tasks = getTasks();
+
+  tasks.push({
+    text: document.getElementById("newTask").value,
+    room: document.getElementById("room").value,
+    done: false
   });
-  set("roomTasks",r);
-  renderRooms();
+
+  saveTasks(tasks);
+  document.getElementById("newTask").value = "";
+  render();
 }
 
-function renderRooms(){
-  document.getElementById("roomData").innerHTML=
-    get("roomTasks").map(x=>
-      `<div class="card"><b>${x.room}</b>: ${x.task}</div>`
-    ).join("");
+function toggle(i){
+  const tasks = getTasks();
+  tasks[i].done = !tasks[i].done;
+  saveTasks(tasks);
+  render();
 }
 
-/* BUDGET */
-function addBudget(){
-  let b=get("budget");
-  b.push({
-    name:document.getElementById("bName").value,
-    cost:Number(document.getElementById("bCost").value)
+function removeTask(i){
+  const tasks = getTasks();
+  tasks.splice(i,1);
+  saveTasks(tasks);
+  render();
+}
+
+function render(){
+  const board = document.getElementById("board");
+  const tasks = getTasks();
+
+  board.innerHTML = "";
+
+  rooms.forEach(room=>{
+    const col = document.createElement("div");
+    col.className = "column";
+
+    const filtered = tasks.filter(t => t.room === room);
+
+    col.innerHTML = `<h3>${room}</h3>` +
+      filtered.map((t,i)=>`
+        <div class="card ${t.done ? "done" : ""}">
+          <input type="checkbox" ${t.done ? "checked" : ""} onclick="toggle(${tasks.indexOf(t)})">
+          ${t.text}
+          <button onclick="removeTask(${tasks.indexOf(t)})">❌</button>
+        </div>
+      `).join("");
+
+    board.appendChild(col);
   });
-  set("budget",b);
-  renderBudget();
 }
 
-function renderBudget(){
-  let b=get("budget");
-  let total=b.reduce((a,x)=>a+x.cost,0);
-
-  document.getElementById("budgetList").innerHTML=
-    b.map(x=>`<div class="card">${x.name} - €${x.cost}</div>`).join("");
-
-  document.getElementById("total").innerText="Total: €"+total;
-}
-
-/* DASHBOARD */
-function renderDash(){
-  document.getElementById("summary").innerHTML=`
-    <div class="card">Tasks: ${get("tasks").length}</div>
-    <div class="card">Budget items: ${get("budget").length}</div>
-    <div class="card">Room tasks: ${get("roomTasks").length}</div>
-  `;
-}
-
-/* INIT */
-function init(){
-  initRooms();
-  renderTasks();
-  renderRooms();
-  renderBudget();
-  renderDash();
-}
+init();
